@@ -6,7 +6,7 @@
 /*   By: tkuhar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:17:17 by tkuhar            #+#    #+#             */
-/*   Updated: 2018/04/14 20:13:30 by tkuhar           ###   ########.fr       */
+/*   Updated: 2018/04/14 20:50:29 by tkuhar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,40 +41,37 @@
 
 // }
 
+
+
+
+
 int	get_next_line(const int fd, char **line)
 {
 	static char	*mem = 0;
 	char		*buf;
 	int			i;
 	char		*tmp;
-	int 		ss;
 	
 	buf = malloc(sizeof(char) * (BUFF_SIZE + 1));
 	ft_bzero(buf, BUFF_SIZE + 1);	
-	ss = 5;
-	while (ss--)
+	while (1)
 	{
-		i = 0;
-		// while (mem && mem[i])
-		// {
-		// 	if(mem[i] == '\n')
-		// 	{
-		// 		*line = ft_strsub(mem, 0, i);
-		// 		tmp = ft_strjoin(0,&mem[i]);
-		// 		free(mem);
-		// 		mem = tmp;
-		// 		return (1);
-		// 	}
-		// 	i++;
-		// }
-	printf("																							%i\n",ss);
+		i = -1;
+		while (mem && mem[++i])
+			if(mem[i] == '\n')
+			{
+				*line = ft_strsub(mem, 0, i);
+				tmp = ft_strjoin(0,&mem[i + 1]);
+				free(mem);
+				mem = tmp;
+				free(buf);
+				return (1);
+			}
 		if (read(fd,buf,BUFF_SIZE))
 		{
-			printf("	:%s\n",mem);
 			tmp = ft_strjoin(mem, buf);
 			free(mem);
 			mem = tmp;
-			printf("join	:%s\n",mem);
 			ft_bzero(buf, BUFF_SIZE + 1);
 		}
 		else
@@ -85,7 +82,6 @@ int	get_next_line(const int fd, char **line)
 			return (1);
 		}
 	}
-	return (1);
 }
 
 int main(int argc, char **argv)
@@ -98,11 +94,15 @@ int main(int argc, char **argv)
 //	printf("%s\n", s);
 //	s = remalloc(&s,"qwert");
 	//printf("%s\n", s);
-	if (argc != 2)
+	if (argc != 3)
 		return(0);
 	fd = open(argv[1], O_RDONLY);
-	get_next_line(fd, &c);
-//	ft_strlen(0);
-	printf("\nout:	%s\n", c);
-	//system("leaks a.out");
+	int i = atoi(argv[2]); 
+	while (i--)
+	{
+		get_next_line(fd, &c);
+		printf("%s\n", c);
+		free(c);
+	}
+	system("leaks a.out");
 }
