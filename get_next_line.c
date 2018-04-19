@@ -6,7 +6,7 @@
 /*   By: tkuhar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:17:17 by tkuhar            #+#    #+#             */
-/*   Updated: 2018/04/19 14:40:14 by tkuhar           ###   ########.fr       */
+/*   Updated: 2018/04/19 16:46:29 by tkuhar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static int		ret(char **f, char **line, char **buf)
 	if (*f)
 	{
 		*line = ft_strdup(*f);
+		free(*f);
 		*f = 0;
 		return (1);
 	}
