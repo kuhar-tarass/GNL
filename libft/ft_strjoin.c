@@ -6,7 +6,7 @@
 /*   By: tkuhar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/25 18:09:56 by tkuhar            #+#    #+#             */
-/*   Updated: 2018/04/14 20:19:11 by tkuhar           ###   ########.fr       */
+/*   Updated: 2018/04/19 14:41:04 by tkuhar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	while (s1 && *s1 != '\0')
 		fresh[i++] = *s1++;
 	while (s2 && *s2 != '\0')
-			fresh[i++] = *s2++;
+		fresh[i++] = *s2++;
 	fresh[i] = '\0';
 	return (fresh);
 }
