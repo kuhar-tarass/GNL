@@ -6,7 +6,7 @@
 /*   By: tkuhar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:17:17 by tkuhar            #+#    #+#             */
-/*   Updated: 2018/04/19 12:17:14 by tkuhar           ###   ########.fr       */
+/*   Updated: 2018/04/19 13:00:52 by tkuhar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,11 @@ static void rewrite(char **dest, char *s0, char *s2)
 	char		*tmp;
 
 	tmp = ft_strjoin(s0, s2);
+	if (!*tmp)
+	{
+		free(tmp);
+		tmp = 0;
+	}
 	if (*dest)
 		free(*dest);
 	*dest = tmp;
@@ -76,7 +81,7 @@ int	get_next_line(const int fd, char **line)
 	static t_ls	*ls = 0;
 	t_ls		*f;
 	char		*buf;
-	int			ret;
+
 	if (fd < 0 || !line || read(fd, 0, 0) < 0)
 		return (-1);
 	f = fnd(&ls, fd);
@@ -87,28 +92,28 @@ int	get_next_line(const int fd, char **line)
 		{
 			*line = ft_strsub(f->dt,0,ft_strchr(f->dt, '\n') - f->dt);
 			rewrite(&f->dt, 0, ft_strchr(f->dt, '\n') + 1);
-			ret = 1;
-			break ;
+			free(buf);
+			return (1);
 		}
 		ft_memset(buf, 0, BUFF_SIZE + 1);
 		read(fd, buf, BUFF_SIZE);
-			if (!(*buf))
+		if (!(*buf))
 		{
 			if (f->dt)
 			{
 				*line = ft_strdup(f->dt);
-				del(&ls, fd);
-				ret = 1;
-				break ;
+				//del(&ls, fd);
+				f->dt = 0;
+				free(buf);
+				return (1);
 			}
-			ret = 0;
-			break ;
+			free(buf);
+			return (0);
 		}
 		rewrite(&f->dt, f->dt, buf);
 	}
-	free(buf);
-	return (ret);
-	/*while (1)
+	/*
+	while (1)
 	{
 		if(f->dt && ft_strchr(f->dt,*buf ? '\n' : '\0'))
 		{
